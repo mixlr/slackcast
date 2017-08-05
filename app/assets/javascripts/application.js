@@ -14,3 +14,71 @@
 //= require turbolinks
 //= require jquery
 //= require_tree .
+
+var writeLog, playSound, playBuffer, setCoverImage;
+
+(function() {
+  var context = new AudioContext();
+
+  writeLog = function(msg) {
+    $('.log-container ul').append($('<li/>').text(msg));
+  }
+
+  playSound = function(sound, reverse, delay) {
+    var request = new XMLHttpRequest();
+
+    request.open('GET', sound, true);
+    request.responseType = 'arraybuffer';
+
+    request.addEventListener('load', function() {
+      context.decodeAudioData(request.response, function(buffer) {
+        playBuffer(buffer, reverse, delay);
+      });
+    });
+
+    request.send();
+  }
+
+  playBuffer = function(buffer, reverse, delay) {
+    var source, delay, feedback, filter, i;
+
+    source = context.createBufferSource();
+
+    if (delay) {
+      delay = context.createDelay();
+      delay.delayTime.value = 0.3;
+
+      feedback = context.createGain();
+      feedback.gain.value = 0.6;
+
+      filter = context.createBiquadFilter();
+      filter.frequency.value = 1000;
+
+      delay.connect(feedback);
+      feedback.connect(filter);
+      filter.connect(delay);
+
+      source.connect(delay);
+      delay.connect(context.destination);
+    }
+
+    source.connect(context.destination);
+
+    if (reverse) {
+      for (i=0; i < buffer.numberOfChannels; i++) {
+        Array.prototype.reverse.call(buffer.getChannelData(i));
+      }
+    }
+
+    source.buffer = buffer;
+    source.start();
+  }
+
+  setCoverImage = function(image) {
+    var $container = $('.cast-container');
+
+    $container.css({
+      'background-image': "url(" + image + ")",
+    });
+  }
+})();

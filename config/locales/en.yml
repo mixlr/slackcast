@@ -30,4 +30,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  played_sound: '*%{user}* is playing _%{sound}_'
+  displayed_image: '*%{user}* is displaying _%{image}_'
+  did_not_recognize_command: 'Sorry! Did not recognize that command'

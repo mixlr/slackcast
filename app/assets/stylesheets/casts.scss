@@ -1,0 +1,41 @@
+.cast-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+
+  h2 {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+
+  .log-container, .log {
+    position: absolute;
+    right: 40px;
+    top: 60px;
+    width: 500px;
+    height: 500px;
+    font-family: monospace;
+    font-size: 10px;
+    overflow: scroll;
+    white-space: pre;
+  }
+
+  .log-container {
+    background: #000;
+    opacity: 0.8;
+
+    > ul {
+      list-style-type: none;
+      color: #fff;
+      padding-left: 1em;
+    }
+  }
+}
