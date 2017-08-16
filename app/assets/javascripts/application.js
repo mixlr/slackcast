@@ -39,6 +39,21 @@ var writeLog, playSound, playBuffer, setCoverImage;
     request.send();
   }
 
+  playWebsocket = function(data) {
+    // decode base64:
+    data = atob(data);
+
+    // convert string to arraybuffer:
+    var bytes = new Uint8Array(data.length);
+    for (var i=0; i < data.length; i++) {
+      bytes[i] = data.charCodeAt(i);
+    }
+
+    context.decodeAudioData(bytes.buffer, function(buffer) {
+      playBuffer(buffer, false, false);
+    });
+  }
+
   playBuffer = function(buffer, reverse, delay) {
     var source, delay, feedback, filter, i;
 

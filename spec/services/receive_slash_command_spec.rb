@@ -77,6 +77,32 @@ RSpec.describe ReceiveSlashCommand do
     end
   end
 
+  context 'with a sound sent through a websocket message' do
+    let(:params) {
+      {
+        text: 'websocket_sound test.mp3',
+        user_name: 'slack user'
+      }
+    }
+
+    before { allow(RestClient).to receive(:get) { 'abcde' } }
+
+    it 'responds with a message' do
+      expect(receiver.call).to eq ':speaker: *slack user* is playing _test.mp3_'
+    end
+
+    it 'sends a broadcast' do
+      expect(ActionCable.server).to receive(:broadcast).once.with(
+        'cast_notifications',
+        {
+          command: 'websocket_sound',
+          args: { data: an_instance_of(String) }
+        }
+      )
+      receiver.call
+    end
+  end
+
   context 'with an image' do
     let(:params) {
       {

@@ -14,6 +14,9 @@ App.cast = App.cable.subscriptions.create("CastChannel", {
     case 'sound':
       playSound(data.args.url, data.args.reverse, data.args.delay);
       break;
+    case 'websocket_sound':
+      playWebsocket(data.args.data);
+      break;
     case 'image':
       setCoverImage(data.args.url);
       break;

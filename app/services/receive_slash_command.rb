@@ -20,6 +20,8 @@ class ReceiveSlashCommand
       receive_sound($1, reverse: true)
     when /\Adelay_sound\s+([^\s]+)/
       receive_sound($1, delay: true)
+    when /\Awebsocket_sound\s+([^\s]+)/
+      receive_websocket_sound($1)
     when /\Aimage\s+([^\s]+)/
       receive_image($1)
     else
@@ -47,6 +49,19 @@ class ReceiveSlashCommand
     emoji = ':camera:'
 
     broadcast_command('image', { url: image })
+
+    '%s %s' % [ emoji, text ]
+  end
+
+  def receive_websocket_sound(sound)
+    sound = URI.join(S3_URI, sound).to_s unless sound.match?(URI_REGEX)
+    data  = Base64.strict_encode64(RestClient.get(sound))
+    base  = File.basename(sound)
+
+    text  = I18n.t(:played_sound, user: user, sound: base)
+    emoji = ':speaker:'
+
+    broadcast_command('websocket_sound', { data: data })
 
     '%s %s' % [ emoji, text ]
   end
