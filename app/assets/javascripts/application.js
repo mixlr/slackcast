@@ -13,18 +13,20 @@
 //= require rails-ujs
 //= require turbolinks
 //= require jquery
+//= require tuna
 //= require_tree .
 
-var writeLog, playSound, playBuffer, setCoverImage;
+var writeLog, playSound, playBuffer;
 
 (function() {
   var context = new AudioContext();
+  var tuna = new Tuna(context);
 
   writeLog = function(msg) {
     $('.log-container ul').append($('<li/>').text(msg));
   }
 
-  playSound = function(sound, reverse, delay) {
+  playSound = function(sound, effects) {
     var request = new XMLHttpRequest();
 
     request.open('GET', sound, true);
@@ -32,53 +34,29 @@ var writeLog, playSound, playBuffer, setCoverImage;
 
     request.addEventListener('load', function() {
       context.decodeAudioData(request.response, function(buffer) {
-        playBuffer(buffer, reverse, delay);
+        playBuffer(buffer, effects);
       });
     });
 
     request.send();
   }
 
-  playBuffer = function(buffer, reverse, delay) {
-    var source, delay, feedback, filter, i;
+  playBuffer = function(buffer, effects) {
+    var source = context.createBufferSource();
+    var nodes = [source];
 
-    source = context.createBufferSource();
+    for (var i=0; i < effects.length; i++) {
+      var effectName = effects[i].name;
+      var effectArgs = effects[i].args;
+      var node = new tuna[effectName](effectArgs);
 
-    if (delay) {
-      delay = context.createDelay();
-      delay.delayTime.value = 0.3;
-
-      feedback = context.createGain();
-      feedback.gain.value = 0.6;
-
-      filter = context.createBiquadFilter();
-      filter.frequency.value = 1000;
-
-      delay.connect(feedback);
-      feedback.connect(filter);
-      filter.connect(delay);
-
-      source.connect(delay);
-      delay.connect(context.destination);
+      nodes[nodes.length - 1].connect(node);
+      nodes.push(node);
     }
 
-    source.connect(context.destination);
-
-    if (reverse) {
-      for (i=0; i < buffer.numberOfChannels; i++) {
-        Array.prototype.reverse.call(buffer.getChannelData(i));
-      }
-    }
+    nodes[nodes.length - 1].connect(context.destination);
 
     source.buffer = buffer;
     source.start();
-  }
-
-  setCoverImage = function(image) {
-    var $container = $('.cast-container');
-
-    $container.css({
-      'background-image': "url(" + image + ")",
-    });
   }
 })();
