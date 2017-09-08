@@ -39,6 +39,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'slack-ruby-client'
 gem 'celluloid-io', require: false
 gem 'foreman'
+gem 'dropbox-sdk-v2', require: 'dropbox'
+gem 'bootsnap', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -47,6 +49,7 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
   gem 'rspec-rails'
+  gem 'dotenv-rails'
 end
 
 group :development do

@@ -3,6 +3,11 @@ require 'rails_helper'
 RSpec.describe ParseMessage do
   let(:bot_ids) { ['U6WBCEV61'] }
   let(:bot_id) { bot_ids.first }
+  let(:sound_url) { 'http://www.dropbox.com/test.mp3' }
+
+  before {
+    allow(GetDropboxLink).to receive(:call) { sound_url }
+  }
 
   subject(:result) {
     described_class.call(
@@ -23,23 +28,42 @@ RSpec.describe ParseMessage do
 
   context 'with a message intended for the bot' do
     let(:message) { "<@#{bot_id}> #{message_body}" }
+    let(:message_body) { 'test' }
 
-    context 'with a simple sound' do
+    it { is_expected.to match(sound: sound_url, effects: []) }
+
+    it 'retrieves the Dropbox link' do
+      expect(GetDropboxLink)
+        .to receive(:call)
+        .once
+        .with('test.mp3')
+        .and_return(sound_url)
+
+      result
+    end
+
+    context 'when the mp3 extension is supplied' do
       let(:message_body) { 'test.mp3' }
 
-      it { is_expected.to eq(sound: 'https://s3-eu-west-1.amazonaws.com/mixlr-sounds/test.mp3', effects: []) }
+      it { is_expected.to eq(sound: sound_url, effects: []) }
     end
 
-    context 'with a simple sound with no extension' do
-      let(:message_body) { 'test' }
-
-      it { is_expected.to match(sound: /test.mp3/, effects: []) }
-    end
-
-    context 'with a URL in Slack format' do
+    context 'when a URL is supplied in Slack format' do
       let(:message_body) { '<http://www.example.com/test.mp3>' }
 
       it { is_expected.to eq(sound: 'http://www.example.com/test.mp3', effects: []) }
+    end
+
+    context 'when the sound does not exist on Dropbox' do
+      before {
+        expect(GetDropboxLink)
+          .to receive(:call)
+          .and_return(nil)
+      }
+
+      it 'raises SoundNotFoundError' do
+        expect { result }.to raise_error(ParseMessage::SoundNotFoundError)
+      end
     end
 
     context 'with a single effect' do
@@ -48,7 +72,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: {} } ]
           )
         end
@@ -59,7 +83,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: { feedback: 0.5 } } ]
           )
         end
@@ -70,7 +94,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: { feedback: 0.5, wetLevel: 2 } } ]
           )
         end
@@ -81,7 +105,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: { feedback: 0.5, wetLevel: 2 } } ]
           )
         end
@@ -92,7 +116,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: { feedback: 0.5, wetLevel: 0.6 } } ]
           )
         end
@@ -105,7 +129,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: {} }, { name: 'Distortion', args: {} } ]
           )
         end
@@ -116,7 +140,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: { feedback: 3.0 } }, { name: 'Distortion', args: {} } ]
           )
         end
@@ -127,7 +151,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: { feedback: 1 } }, { name: 'Distortion', args: {} } ]
           )
         end
@@ -138,7 +162,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'PingPongDelay', args: { feedback: 0.25 } }, { name: 'Distortion', args: {} } ]
           )
         end
@@ -149,7 +173,7 @@ RSpec.describe ParseMessage do
 
         it 'parses as expected' do
           expect(result).to match(
-            sound: /test.mp3/,
+            sound: sound_url,
             effects: [ { name: 'Delay', args: { feedback: 3.0, wetLevel: 1 } }, { name: 'Distortion', args: { amount: 6 } } ]
           )
         end

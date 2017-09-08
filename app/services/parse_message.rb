@@ -1,9 +1,16 @@
 class ParseMessage
   MP3             = '.mp3'.freeze
-  S3_URI          = 'https://s3-eu-west-1.amazonaws.com/mixlr-sounds/'.freeze
   NUMBER_REGEX    = /\A\d+(\.\d+)?\z/.freeze
   URI_REGEX       = /\Ahttps?:\/\//.freeze
   SLACK_URI_REGEX = /\A<http.*>\z/
+
+  SoundNotFoundError  = Class.new(StandardError) do
+    attr_reader :sound
+
+    def initialize(sound)
+      @sound = sound
+    end
+  end
 
   # Example: <@U6WBCEV61>
   SLACK_TAG_REGEX = /<@\w+>/.freeze
@@ -48,7 +55,10 @@ class ParseMessage
     return sound[1..-2] if sound.match?(SLACK_URI_REGEX)
 
     sound += MP3 unless sound.ends_with?(MP3)
-    URI.join(S3_URI, sound).to_s
+
+    GetDropboxLink.call(sound).tap do |url|
+      raise SoundNotFoundError.new(sound) unless url
+    end
   end
 
   def parse_effects(effects_string)
