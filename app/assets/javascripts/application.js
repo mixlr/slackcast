@@ -19,11 +19,19 @@
 var writeLog, playSound, playBuffer;
 
 (function() {
-  var context = new AudioContext();
-  var tuna = new Tuna(context);
+  var init, context, tuna;
+
+  init = function() {
+    context = new AudioContext();
+    tuna = new Tuna(context);
+  }
 
   writeLog = function(msg) {
     $('.log-container ul').append($('<li/>').text(msg));
+  }
+
+  silence = function() {
+    context.close().then(init);
   }
 
   playSound = function(sound, effects) {
@@ -59,4 +67,6 @@ var writeLog, playSound, playBuffer;
     source.buffer = buffer;
     source.start();
   }
+
+  init();
 })();

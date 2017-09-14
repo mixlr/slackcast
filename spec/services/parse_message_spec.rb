@@ -26,7 +26,14 @@ RSpec.describe ParseMessage do
     it { is_expected.to be nil }
   end
 
-  context 'with a message intended for the bot' do
+  context 'with a command intended for the bot' do
+    let(:message) { "<@#{bot_id}> #{message_body}" }
+    let(:message_body) { 'silence' }
+
+    it { is_expected.to eq(command: 'silence') }
+  end
+
+  context 'with a sound intended for the bot' do
     let(:message) { "<@#{bot_id}> #{message_body}" }
     let(:message_body) { 'test' }
 

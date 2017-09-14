@@ -21,6 +21,12 @@ App.cast = App.cable.subscriptions.create({
     received: function(data) {
       writeLog('Received message: ' + JSON.stringify(data));
 
-      playSound(data.sound, data.effects);
+      switch(data.command) {
+        case 'silence':
+          silence();
+          break;
+        default:
+          playSound(data.sound, data.effects);
+      }
     }
 });

@@ -26,20 +26,16 @@ class ParseMessage
   end
 
   def initialize(message:, bot_ids:)
-    @message = message
+    @message = message.dup
     @bot_ids = bot_ids
   end
 
   def call
     return unless for_bot?
 
-    message_body = message.gsub(SLACK_TAG_REGEX, '').strip
-    sound, effects_string = message_body.split(/[^\S]+/, 2)
+    message.gsub!(SLACK_TAG_REGEX, '').strip!
 
-    {
-      sound:    to_uri(sound),
-      effects:  parse_effects(effects_string)
-    }
+    parse_commands || parse_sounds
   end
 
   private
@@ -48,6 +44,19 @@ class ParseMessage
 
   def for_bot?
     @bot_ids.any? { |id| message.include?("<@#{id}>") }
+  end
+
+  def parse_commands
+    return { command: 'silence' } if message == 'silence'
+  end
+
+  def parse_sounds
+    sound, effects_string = message.split(/[^\S]+/, 2)
+
+    {
+      sound:    to_uri(sound),
+      effects:  parse_effects(effects_string)
+    }
   end
 
   def to_uri(sound)
