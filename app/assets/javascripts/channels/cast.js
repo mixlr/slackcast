@@ -22,11 +22,14 @@ App.cast = App.cable.subscriptions.create({
       writeLog('Received message: ' + JSON.stringify(data));
 
       switch(data.command) {
+        case 'play_sound':
+          playSound(data.sound, data.effects);
+          break;
         case 'silence':
           silence();
           break;
         default:
-          playSound(data.sound, data.effects);
+          writeLog('Unknown data received: ' + JSON.stringify(data));
       }
     }
 });
