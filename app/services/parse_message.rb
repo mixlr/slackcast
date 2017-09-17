@@ -1,5 +1,6 @@
 require 'commands/silence'
 require 'commands/play_sound'
+require 'commands/random'
 
 class ParseMessage
   # Example: <@U6WBCEV61>

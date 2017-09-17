@@ -14,6 +14,12 @@ RSpec.describe ParseMessage do
     it { is_expected.to eq([ Commands::Silence, [] ]) }
   end
 
+  context 'with a command with arguments' do
+    let(:message_body) { 'random delay' }
+
+    it { is_expected.to eq([ Commands::Random, ['delay']]) }
+  end
+
   context 'with the default service' do
     context 'with a simple sound' do
       let(:message_body) { 'foo' }
