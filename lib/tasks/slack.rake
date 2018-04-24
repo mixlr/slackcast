@@ -1,5 +1,13 @@
 namespace :slack do
   task :start_client => :environment do
-    SlackClient.new.start!
+    client = SlackClient.new
+    auth   = client.auth_test
+
+    if auth.ok?
+      Rails.logger.info "Connected to %s as %s" % [auth.team, auth.user]
+      client.start!
+    else
+      fail 'Unable to connect to Slack'
+    end
   end
 end

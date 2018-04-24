@@ -2,6 +2,7 @@ require 'celluloid/io'
 
 class SlackClient
   delegate :start!, :web_client, to: :rt_client
+  delegate :auth_test, to: :web_client
 
   def initialize
     rt_client.on :message, &method(:on_message)
