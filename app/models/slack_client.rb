@@ -40,6 +40,6 @@ class SlackClient
   end
 
   def for_bot?(msg)
-    rt_client.users.keys.any? { |id| msg.text.include?("<@#{id}>") }
+    rt_client.users.keys.any? { |id| msg.text&.include?("<@#{id}>") }
   end
 end
