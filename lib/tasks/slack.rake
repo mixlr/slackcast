@@ -5,6 +5,7 @@ namespace :slack do
 
     if auth.ok?
       Rails.logger.info "Connected to %s as %s" % [auth.team, auth.user]
+      client.id = auth.user_id
       client.start!
     else
       fail 'Unable to connect to Slack'

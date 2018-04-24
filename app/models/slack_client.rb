@@ -1,6 +1,7 @@
 require 'celluloid/io'
 
 class SlackClient
+  attr_accessor :id
   delegate :start!, :web_client, to: :rt_client
   delegate :auth_test, to: :web_client
 
@@ -41,6 +42,6 @@ class SlackClient
   end
 
   def for_bot?(msg)
-    rt_client.users.keys.any? { |id| msg.text&.include?("<@#{id}>") }
+    msg.text&.include?("<@#{id}>")
   end
 end
