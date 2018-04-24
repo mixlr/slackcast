@@ -12,6 +12,8 @@ class GetDropboxLink
   def call
     path = "#{root_path}/#{@basename}"
     client.get_temporary_link(path).last
-  rescue Dropbox::ApiError
+  rescue Dropbox::ApiError => e
+    Rails.logger.warn("Dropbox connection error: #{e.message}")
+    nil
   end
 end

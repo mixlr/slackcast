@@ -16,6 +16,11 @@ class GetRandomSound
   private
 
   def folder
-    @folder ||= client.list_folder(root_path)
+    @folder ||= begin
+      client.list_folder(root_path)
+    rescue Dropbox::ApiError => e
+      Rails.logger.warn("Dropbox folder listing error: #{e.message}")
+      []
+    end
   end
 end
