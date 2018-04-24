@@ -1,8 +1,10 @@
 module DropboxClient
   protected
 
+  # Returns the root path from the App base directory (Dropbox/Apps/Mixlr Slackcast)
+  # note: use '' instead of '/' when targeting the root folder
   def root_path
-    Slackcast::Application.config.x.dropbox.root_path
+    ''
   end
 
   def client
