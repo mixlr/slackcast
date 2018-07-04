@@ -14,7 +14,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 3.0'
 
 gem 'slack-ruby-client'
-gem 'celluloid-io', require: false
+gem 'celluloid-io', require: ['celluloid/current', 'celluloid/io']
 gem 'foreman'
 gem 'dropbox-sdk-v2', require: 'dropbox'
 gem 'bootsnap', require: false
