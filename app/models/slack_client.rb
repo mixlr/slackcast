@@ -6,10 +6,25 @@ class SlackClient
   delegate :auth_test, to: :web_client
 
   def initialize
+    rt_client.on :hello,   &method(:on_hello)
+    rt_client.on :close,   &method(:on_close)
+    rt_client.on :closed,  &method(:on_closed)
     rt_client.on :message, &method(:on_message)
   end
 
   private
+
+  def on_hello(msg)
+    Rails.logger.info "Connected to %s as %s" % [rt_client.team.name, rt_client.self.name]
+  end
+
+  def on_close(data)
+    Rails.logger.info "About do disconnect from %s" % rt_client.team.name
+  end
+
+  def on_closed(data)
+    Rails.logger.info "Disconnected from %s" % rt_client.team.name
+  end
 
   def on_message(msg)
     return unless for_bot?(msg)
