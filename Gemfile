@@ -25,3 +25,7 @@ group :development do
   gem 'pry'
   gem 'listen'
 end
+
+group :test do
+  gem 'rspec_junit_formatter', require: false
+end
