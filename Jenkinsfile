@@ -45,7 +45,7 @@ pipeline {
   }
 
   environment {
-    CONTAINER_NAME = "mixlr/slackcast:${env.CHANGE_ID}"
+    CONTAINER_NAME = 'mixlr/slackcast'
 
     RAILS_ENV = 'test'
     SLACK_BOT_API_TOKEN = 'foobar'
