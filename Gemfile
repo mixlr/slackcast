@@ -15,6 +15,7 @@ gem 'foreman',           '~> 0.85'
 gem 'celluloid-io',      '~> 0.17', require: ['celluloid/current', 'celluloid/io']
 gem 'dropbox-sdk-v2',    '= 0.0.3', require: 'dropbox'
 gem 'bootsnap',          '~> 1.3',  require: false
+gem "barnes"
 
 group :development, :test do
   gem 'rspec-rails'
