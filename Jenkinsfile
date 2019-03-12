@@ -70,6 +70,8 @@ pipeline {
           -v \"${env.WORKSPACE}\":/srv/app/ \
           -e RAILS_ENV=\"${env.RAILS_ENV}\" \
           -e SLACK_BOT_API_TOKEN=\"${env.SLACK_BOT_API_TOKEN}\" \
+          -e AIRBRAKE_PROJECT_ID=\"${env.AIRBRAKE_PROJECT_ID}\" \
+          -e AIRBRAKE_PROJECT_KEY=\"${env.AIRBRAKE_PROJECT_KEY}\" \
           ${env.CONTAINER_NAME} rspec --colour --tty --format doc \
           -r rspec_junit_formatter --format RspecJunitFormatter -o \"${env.REPORT_PATH}\""
       }
