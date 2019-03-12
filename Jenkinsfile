@@ -49,6 +49,9 @@ pipeline {
 
     RAILS_ENV = 'test'
     SLACK_BOT_API_TOKEN = 'foobar'
+    AIRBRAKE_PROJECT_ID = 'DUMMY'
+    AIRBRAKE_PROJECT_KEY = 'DUMMY'
+
     REPORT_PATH = 'spec/report.xml'
   }
 
