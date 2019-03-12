@@ -8,39 +8,46 @@ Bonus integration with [Tuna.js](https://github.com/Theodeus/tuna) to trigger pe
 
 ## Usage
 
-Play a sound via Slack:
+- Play a sound:
 
-`@mick moo`
+  `@mick moo`
 
-Add an Tuna effect node:
+- Add an Tuna effect node:
 
-`@mick moo ping_pong_delay`
+  `@mick moo ping_pong_delay`
 
-Effects can also be written in CamelCase:
+- Effects can also be written in CamelCase:
 
-`@mick moo PingPongDelay`
+  `@mick moo PingPongDelay`
 
-Pass arguments to the effect:
+- Pass arguments to the effect:
 
-`@mick moo delay(delayTime=1000)`
+  `@mick moo delay(delayTime=1000)`
 
-Pass multiple arguments:
+- Pass multiple arguments:
 
-`@mick moo delay(delayTime=300 feedback=0.55 cutoff=1000)`
+  `@mick moo delay(delayTime=300 feedback=0.55 cutoff=1000)`
 
-Arguments can also be written JSON-style:
+- Arguments can also be written JSON-style:
 
-`@mick moo delay(delayTime: 300, feedback: 0.55, cutoff: 1000)`
+  `@mick moo delay(delayTime: 300, feedback: 0.55, cutoff: 1000)`
 
-Chain multiple effects, some with arguments:
+- Chain multiple effects, some with arguments:
 
-`@mick moo wah_wah ping_pong_delay(wetLevel=0.1)`
+  `@mick moo wah_wah ping_pong_delay(wetLevel=0.1)`
 
-Play a sound via HTTP (note: must be CORS-compliant in most browsers)
+- Play a sound via HTTP (note: must be CORS-compliant in most browsers)
 
-`@mick moo http://www.example.com/moo.mp3`
+  `@mick moo http://www.example.com/moo.mp3`
 
 See [Tuna.js wiki](https://github.com/Theodeus/tuna/wiki) for a full list of effects and arguments.
+
+## Development
+
+```
+docker build --build_arg rails_env=development -t mixlr/slackcast:latest .
+docker run --rm -it -e RAILS_ENV=development mixlr/slackcast:latest
+```
 
 ## Deployment
 
