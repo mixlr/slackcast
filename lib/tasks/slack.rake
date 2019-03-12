@@ -15,6 +15,9 @@ namespace :slack do
     rescue Slack::Web::Api::Errors::SlackError => e
       Rails.logger.error "Authentication error: %s" % e.message
       exit 1
+    rescue => e
+      Airbrake.notify(e)
+      retry
     end
   end
 end
