@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-ruby File.read('.ruby-version')
 
 gem 'rails',             '~> 5.2'
 gem 'puma',              '~> 3.12'
