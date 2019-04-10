@@ -45,39 +45,39 @@ pipeline {
   }
 
   environment {
-    CONTAINER_NAME = 'mixlr/slackcast'
-
-    RAILS_ENV = 'test'
-    SLACK_BOT_API_TOKEN = 'foobar'
-    AIRBRAKE_PROJECT_ID = 'DUMMY'
-    AIRBRAKE_PROJECT_KEY = 'DUMMY'
-
-    REPORT_PATH = 'spec/report.xml'
+    DOCKER_IMAGE = "mixlr/slackcast"
+    DOCKER_TAG = "latest"
+    RAILS_ENV = "test"
+    RAILS_ROOT = "/src/app"
+    SLACK_BOT_API_TOKEN = "foobar"
+    AIRBRAKE_PROJECT_ID = "DUMMY"
+    AIRBRAKE_PROJECT_KEY = "DUMMY"
   }
 
   stages {
     stage('Build') {
       steps {
         notifySlack('started')
-
-        sh "docker build -t ${env.CONTAINER_NAME} ."
+        sh "docker build \
+          --build-arg rails_root=${env.RAILS_ROOT} \
+          --build-arg rails_env=${env.RAILS_ENV} \
+          -t ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} ."
       }
     }
 
     stage('Test') {
       steps {
         sh "docker run --rm \
-          -v \"${env.WORKSPACE}\":/srv/app/ \
+          -v \"${env.WORKSPACE}/spec/\":\"${env.RAILS_ROOT}/spec/\" \
           -e RAILS_ENV=\"${env.RAILS_ENV}\" \
           -e SLACK_BOT_API_TOKEN=\"${env.SLACK_BOT_API_TOKEN}\" \
-          -e AIRBRAKE_PROJECT_ID=\"${env.AIRBRAKE_PROJECT_ID}\" \
-          -e AIRBRAKE_PROJECT_KEY=\"${env.AIRBRAKE_PROJECT_KEY}\" \
-          ${env.CONTAINER_NAME} rspec --colour --tty --format doc \
-          -r rspec_junit_formatter --format RspecJunitFormatter -o \"${env.REPORT_PATH}\""
+          ${env.DOCKER_IMAGE}:${env.DOCKER_TAG} rspec --colour --tty \
+          --format doc \
+          --format RspecJunitFormatter --out spec/report.xml"
       }
 
       post {
-        always   { junit("${env.REPORT_PATH}") }
+        always   { junit("spec/report.xml") }
         success  { notifySlack('success') }
         failure  { notifySlack('failure')  }
         unstable { notifySlack('unstable') }
