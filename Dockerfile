@@ -25,7 +25,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --production
 COPY . .
 # RUN bin/rails webpacker:compile
-RUN bin/rails assets:precompile
+# RUN bin/rails assets:precompile
 
 EXPOSE 3000
 ENTRYPOINT ["bundle", "exec"]
