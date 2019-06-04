@@ -1,0 +1,60 @@
+image: docker:git
+services:
+  - docker:dind
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375/
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_PIPELINE_ID
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+  RAILS_ENV: test
+
+Build Release Image:
+  stage: build
+  before_script:
+    - echo $CONTAINER_RELEASE_IMAGE
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CONTAINER_RELEASE_IMAGE || true
+    - docker build --cache-from $CONTAINER_RELEASE_IMAGE -t $CONTAINER_RELEASE_IMAGE .
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - master
+
+Build Test Image:
+  stage: build
+  before_script:
+    - echo $CONTAINER_TEST_IMAGE
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --cache-from $CONTAINER_RELEASE_IMAGE -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+RSpec:
+  stage: test
+  image: $CONTAINER_TEST_IMAGE
+  variables:
+    SLACK_BOT_API_TOKEN: 'foobar'
+    AIRBRAKE_PROJECT_ID: 'DUMMY'
+    AIRBRAKE_PROJECT_KEY: 'DUMMY'
+  script:
+    - bundle exec rspec -f doc -r rspec_junit_formatter -f RspecJunitFormatter -o rspec.xml
+  artifacts:
+    reports:
+      junit: rspec.xml
+
+Deploy staging:
+  stage: deploy
+  image: ruby
+  variables:
+    APP_NAME: 'slackcast-staging'
+  script:
+    - gem install dpl
+    - dpl --provider=heroku --app=$APP_NAME --api-key=$HEROKU_STAGING_API_KEY
+  only:
+    - master

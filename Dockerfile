@@ -16,7 +16,6 @@ ENV RAILS_ENV=${rails_env}
 ENV NODE_ENV=${rails_env}
 
 WORKDIR $rails_root
-# install rubygem
 COPY Gemfile Gemfile.lock $rails_root/
 RUN bundle config --global frozen 1 \
   && bundle install -j$(nproc) --retry 3

@@ -1,4 +1,4 @@
-# Slackcast
+# Slackcast [![pipeline status](https://gitlab.com/mixlr/slackcast/badges/master/pipeline.svg)](https://gitlab.com/mixlr/slackcast/commits/master) [![coverage report](https://gitlab.com/mixlr/slackcast/badges/master/coverage.svg)](https://gitlab.com/mixlr/slackcast/commits/master)
 
 ## Overview
 

@@ -1,0 +1,23 @@
+# Version control files:
+/.git/
+/.gitignore
+
+# Docker and environment files:
+/*Dockerfile
+/*.env
+/.dockerignore
+
+# Log files:
+/log/*.log
+
+# Temporary files:
+/tmp/
+
+# OS artifacts:
+/**/.DS_Store
+
+# Development container's Home artifacts:
+/.bash_history
+/.pry_history
+/.guard_history
+/.bundle/*
