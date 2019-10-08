@@ -1,0 +1,42 @@
+version: '3.6'
+volumes:
+  redis:
+services:
+  redis:
+    image: redis:2.8.23
+    volumes:
+      - redis:/data
+    ports:
+      - '6379:6379'
+  web:
+    build: .
+    image: registry.gitlab.com/mixlr/slackcast
+    command: bundle exec puma -C config/puma.rb
+    stdin_open: true
+    tty: true
+    environment: &development
+      PORT: '3001'
+      RAILS_ENV: 'development'
+      REDIS_URL: 'redis://redis:6379/'
+      LOG_LEVEL: 'INFO'
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/src/app
+    depends_on:
+      - redis
+  mick:
+    build: .
+    image: registry.gitlab.com/mixlr/slackcast
+    command: bundle exec rails runner bin/mick
+    stdin_open: true
+    tty: true
+    environment:
+      <<: *development
+      SLACK_API_TOKEN:
+      DROPBOX_API_TOKEN:
+      DROPBOX_ROOT_PATH:
+    volumes:
+      - .:/src/app
+    depends_on:
+      - redis

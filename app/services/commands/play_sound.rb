@@ -1,3 +1,6 @@
+require 'send_to_browser'
+require 'get_dropbox_link'
+
 module Commands
   class PlaySound
     MP3             = '.mp3'.freeze

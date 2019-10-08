@@ -1,21 +1,21 @@
 source 'https://rubygems.org'
 
-gem 'rails',             '~> 5.2'
-gem 'puma',              '~> 3.12'
-gem 'sass-rails',        '~> 5.0'
-gem 'haml-rails',        '~> 1.0'
-gem 'uglifier',          '~> 4.1'
-gem 'jquery-rails',      '~> 4.3'
-gem 'turbolinks',        '~> 5.2'
-gem 'jbuilder',          '~> 2.5'
-gem 'redis',             '~> 3.0'
-gem 'slack-ruby-client', '~> 0.14'
-gem 'foreman',           '~> 0.85'
-gem 'async-websocket'
-gem 'dropbox-sdk-v2',    '= 0.0.3', require: 'dropbox'
-gem 'bootsnap',          '~> 1',    require: false
+gem 'rails',           '~> 5.2'
+gem 'puma',            '~> 3.12'
+gem 'sass-rails',      '~> 5.0'
+gem 'haml-rails',      '~> 1.0'
+gem 'uglifier',        '~> 4.1'
+gem 'jquery-rails',    '~> 4.3'
+gem 'turbolinks',      '~> 5.2'
+gem 'jbuilder',        '~> 2.5'
+gem 'redis',           '~> 3.0'
+gem 'slack-ruby-bot'
+gem 'foreman',         '~> 0.85'
+gem 'async-websocket', '~> 0.8.0'
+gem 'dropbox-sdk-v2',  '= 0.0.3', require: 'dropbox'
+gem 'bootsnap',        '~> 1',    require: false
 gem "barnes"
-gem 'airbrake-ruby',     '~> 4'
+gem 'airbrake-ruby',   '~> 4'
 
 group :development, :test do
   gem 'rspec-rails'
