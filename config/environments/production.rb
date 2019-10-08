@@ -90,6 +90,6 @@ Rails.application.configure do
   # config.active_record.dump_schema_after_migration = false
 
   # Required for Heroku:
-  config.middleware.use CustomActionCable
+  config.middleware.use HerokuActionCable
   config.web_socket_server_url = "wss://slackcast.herokuapp.com/"
 end

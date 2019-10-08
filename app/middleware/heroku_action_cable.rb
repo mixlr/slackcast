@@ -1,4 +1,4 @@
-class CustomActionCable < ActionCable::Connection::WebSocket
+class HerokuActionCable < ActionCable::Connection::WebSocket
   def initialize(app, options={})
     @app = app
  end
