@@ -1,3 +1,6 @@
+require 'commands/play_sound'
+require 'get_random_sound'
+
 module Commands
   class Random
     def self.call(*args)

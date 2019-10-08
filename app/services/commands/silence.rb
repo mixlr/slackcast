@@ -1,3 +1,5 @@
+require 'send_to_browser'
+
 module Commands
   class Silence
     def self.call
