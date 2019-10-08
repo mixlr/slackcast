@@ -11,7 +11,7 @@ gem 'jbuilder',          '~> 2.5'
 gem 'redis',             '~> 3.0'
 gem 'slack-ruby-client', '~> 0.14'
 gem 'foreman',           '~> 0.85'
-gem 'celluloid-io',      '~> 0.17', require: ['celluloid/current', 'celluloid/io']
+gem 'async-websocket'
 gem 'dropbox-sdk-v2',    '= 0.0.3', require: 'dropbox'
 gem 'bootsnap',          '~> 1',    require: false
 gem "barnes"

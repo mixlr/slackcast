@@ -1,5 +1,3 @@
-require 'celluloid/io'
-
 class SlackClient
   attr_accessor :id
   delegate :start!, :web_client, to: :rt_client

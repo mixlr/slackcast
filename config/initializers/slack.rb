@@ -1,8 +1,8 @@
 Slack.configure do |config|
   config.token = ENV.fetch('SLACK_BOT_API_TOKEN') { 'dummy' }
 
-  config.logger = Logger.new(STDOUT).tap { |l|
-    l.level = ENV.fetch('LOG_LEVEL', Logger::INFO)
+  config.logger = Logger.new(STDOUT).tap { |logger|
+    logger.level = ENV.fetch('LOG_LEVEL') { Logger::INFO }
   }
 end
 
