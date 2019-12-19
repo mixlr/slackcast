@@ -18,6 +18,7 @@ gem 'bootsnap',        '~> 1',    require: false
 gem "barnes"
 gem 'airbrake-ruby'
 gem 'dpl'
+gem 'dpl-heroku'
 
 group :development, :test do
   gem 'rspec'
