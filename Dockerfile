@@ -1,4 +1,4 @@
-ARG ruby_version=2.6.2
+ARG ruby_version=2.6.5
 FROM ruby:$ruby_version-alpine AS build-env
 
 # install packages
