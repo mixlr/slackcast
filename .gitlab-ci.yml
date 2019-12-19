@@ -48,13 +48,13 @@ RSpec:
     reports:
       junit: rspec.xml
 
-Deploy staging:
+Deploy:
   stage: deploy
-  image: ruby
+  image: $CONTAINER_RELEASE_IMAGE
   variables:
-    APP_NAME: 'slackcast-staging'
+    APP_NAME: 'slackcast'
   script:
     - gem install dpl
-    - dpl --provider=heroku --app=$APP_NAME --api-key=$HEROKU_STAGING_API_KEY
+    - dpl --provider=heroku --app=$APP_NAME --api-key=$HEROKU_API_KEY
   only:
     - master

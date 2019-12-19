@@ -40,7 +40,7 @@ module Commands
 
       SendToBrowser.call(:play_sound, data)
 
-      nil
+      { reaction: '+1' }
     end
 
     def to_uri(sound)

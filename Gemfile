@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby File.read('.ruby-version')
 
 gem 'rails',           '~> 5.2'
 gem 'puma',            '~> 3.12'
@@ -15,11 +16,15 @@ gem 'async-websocket', '~> 0.8.0'
 gem 'dropbox-sdk-v2',  '= 0.0.3', require: 'dropbox'
 gem 'bootsnap',        '~> 1',    require: false
 gem "barnes"
-gem 'airbrake-ruby',   '~> 4'
+gem 'airbrake-ruby'
 
 group :development, :test do
+  gem 'rspec'
   gem 'rspec-rails'
   gem 'dotenv-rails'
+  gem 'rack-test'
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :development do
