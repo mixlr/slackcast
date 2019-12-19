@@ -17,6 +17,7 @@ gem 'dropbox-sdk-v2',  '= 0.0.3', require: 'dropbox'
 gem 'bootsnap',        '~> 1',    require: false
 gem "barnes"
 gem 'airbrake-ruby'
+gem 'dpl'
 
 group :development, :test do
   gem 'rspec'

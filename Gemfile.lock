@@ -76,6 +76,7 @@ GEM
     dotenv-rails (2.7.2)
       dotenv (= 2.7.2)
       railties (>= 3.2, < 6.1)
+    dpl (1.10.14)
     dropbox-sdk-v2 (0.0.3)
       http (~> 2.0)
     erubi (1.8.0)
@@ -281,6 +282,7 @@ DEPENDENCIES
   barnes
   bootsnap (~> 1)
   dotenv-rails
+  dpl
   dropbox-sdk-v2 (= 0.0.3)
   foreman (~> 0.85)
   haml-rails (~> 1.0)
