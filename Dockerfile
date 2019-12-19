@@ -2,7 +2,7 @@ ARG ruby_version=2.6.2
 FROM ruby:$ruby_version-alpine AS build-env
 
 # install packages
-ARG build_packages="build-base curl-dev git"
+ARG build_packages="build-base curl git"
 ARG dev_packages="yaml-dev zlib-dev nodejs yarn"
 ARG ruby_packages="tzdata"
 RUN apk update \
