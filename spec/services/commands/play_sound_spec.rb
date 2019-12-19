@@ -13,7 +13,7 @@ RSpec.describe Commands::PlaySound do
     let(:message) { 'test' }
 
     it 'returns nil' do
-      expect(service_object.call).to be nil
+      expect(service_object.call).to match hash_including(reaction: a_kind_of(String))
     end
 
     it 'retrieves the Dropbox link' do
@@ -41,7 +41,7 @@ RSpec.describe Commands::PlaySound do
     let(:message) { 'test.mp3' }
 
     it 'returns nil' do
-      expect(service_object.call).to be nil
+      expect(service_object.call).to match hash_including(reaction: a_kind_of(String))
     end
 
     it 'retrieves the Dropbox link' do
@@ -70,7 +70,7 @@ RSpec.describe Commands::PlaySound do
     let(:message) { "<#{sound_url}>" }
 
     it 'returns nil' do
-      expect(service_object.call).to be nil
+      expect(service_object.call).to match hash_including(reaction: a_kind_of(String))
     end
 
     it 'does not retrieve a Dropbox link' do
