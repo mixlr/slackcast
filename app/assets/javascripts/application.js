@@ -26,6 +26,16 @@ var writeLog, playSound, playBuffer;
   if (AudioContext) {
     var context = new AudioContext();
 
+    if (context.state == 'suspended') {
+      document.querySelector('body').addEventListener('click', function() {
+        context.resume().then(() => {
+          console.log('Playback resumed successfully');
+        });
+      });
+
+      alert('Click anywhere to enable audio');
+    }
+
     writeLog = function(msg) {
       $('.log-container ul').append($('<li/>').text(msg));
     }
