@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require_relative '../app/bot/mick'
+
+begin
+  SlackRubyBot::App.instance.run
+rescue Slack::Web::Api::Errors::SlackError => e
+  Airbrake.notify(e)
+  raise
+end

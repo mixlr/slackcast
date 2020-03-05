@@ -13,9 +13,10 @@
 //= require rails-ujs
 //= require turbolinks
 //= require jquery
+//= require tuna
 //= require_tree .
 
-var writeLog, playSound, playBuffer, setCoverImage;
+var writeLog, playSound, playBuffer;
 
 (function() {
   var AudioContext = window.AudioContext // Default

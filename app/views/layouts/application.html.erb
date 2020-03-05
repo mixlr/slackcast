@@ -5,10 +5,17 @@
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
     <%= yield %>
   </body>
+
+
+  <script type="text/javascript">
+    window.App = window.App || {};
+    App.CODE_VERSION = '<%= GetCodeVersion.call %>';
+  </script>
+
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 </html>

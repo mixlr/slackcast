@@ -87,9 +87,9 @@ Rails.application.configure do
   end
 
   # Do not dump schema after migrations.
-  config.active_record.dump_schema_after_migration = false
+  # config.active_record.dump_schema_after_migration = false
 
   # Required for Heroku:
-  config.middleware.use CustomActionCable
+  config.middleware.use HerokuActionCable
   config.web_socket_server_url = "wss://slackcast.herokuapp.com/"
 end
