@@ -11,7 +11,7 @@ gem 'jbuilder'
 gem 'redis'
 gem 'slack-ruby-bot'
 gem 'foreman'
-gem 'async-websocket'
+gem 'async-websocket', '~> 0.8.0'
 gem 'dropbox-sdk-v2',  '= 0.0.3', require: 'dropbox'
 gem 'bootsnap', require: false
 gem "barnes"
