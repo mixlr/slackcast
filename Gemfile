@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby File.read('.ruby-version')
 
 gem 'rails',           '~> 5.2'
-gem 'puma',            '~> 3.12'
+gem 'puma',            '~> 4.3'
 gem 'sass-rails',      '~> 5.0'
 gem 'haml-rails',      '~> 1.0'
 gem 'uglifier',        '~> 4.1'
