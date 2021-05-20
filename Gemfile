@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2'
 gem 'puma'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails'
 gem 'haml-rails'
 gem 'uglifier'
 gem 'jquery-rails'
