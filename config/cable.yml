@@ -7,5 +7,5 @@ test:
 
 production:
   adapter: redis
-  url: <%= ENV['REDIS_URL'] %>
+  url: <%= ENV['HEROKU_REDIS_PINK_URL'] %>
   channel_prefix: slackcast_production
