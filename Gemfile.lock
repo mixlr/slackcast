@@ -59,7 +59,7 @@ GEM
     barnes (0.0.9)
       multi_json (~> 1)
       statsd-ruby (~> 1.1)
-    bootsnap (1.7.5)
+    bootsnap (1.7.6)
       msgpack (~> 1.0)
     builder (3.2.4)
     coderay (1.1.3)
