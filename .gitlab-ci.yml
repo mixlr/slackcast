@@ -1,43 +1,29 @@
-image: docker:git
-services:
-  - docker:dind
-
 stages:
   - build
   - test
+  - release
   - deploy
 
+include:
+  - local: .gitlab/*.gitlab-ci.yml
+
 variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375/
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_PIPELINE_ID
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
-  RAILS_ENV: test
+  SLACKCAST_TEST_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  SLACKCAST_RELEASE_IMAGE_NAME: $CI_REGISTRY_IMAGE:latest
 
-Build Release Image:
+build:gitlab:test:
   stage: build
-  before_script:
-    - echo $CONTAINER_RELEASE_IMAGE
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker pull $CONTAINER_RELEASE_IMAGE || true
-    - docker build --cache-from $CONTAINER_RELEASE_IMAGE -t $CONTAINER_RELEASE_IMAGE .
-    - docker push $CONTAINER_RELEASE_IMAGE
-  only:
-    - master
+  extends: [".kaniko:build"]
+  variables:
+    KANIKO_IMAGE_NAME: $SLACKCAST_TEST_IMAGE_NAME
+    RAILS_ENV: "test"
+  only: ["merge_requests"]
+  needs: []
+  dependencies: []
 
-Build Test Image:
-  stage: build
-  before_script:
-    - echo $CONTAINER_TEST_IMAGE
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build --cache-from $CONTAINER_RELEASE_IMAGE -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
-
-RSpec:
+rspec:
   stage: test
-  image: $CONTAINER_TEST_IMAGE
+  image: $SLACKCAST_TEST_IMAGE_NAME
   variables:
     SLACK_API_TOKEN: 'foobar'
     AIRBRAKE_PROJECT_ID: 'DUMMY'
@@ -47,13 +33,27 @@ RSpec:
   artifacts:
     reports:
       junit: rspec.xml
+  needs: ["build:gitlab:test"]
+  dependencies: ["build:gitlab:test"]
+  only: ["merge_requests"]
 
-Deploy:
+release:gitlab:
+  stage: release
+  extends: [".kaniko:build"]
+  variables:
+    KANIKO_IMAGE_NAME: $SLACKCAST_RELEASE_IMAGE_NAME
+    RAILS_ENV: "production"
+  only: ["master"]
+  needs: ["rspec"]
+  dependencies: ["rspec"]
+
+deploy:
   stage: deploy
   image: $CONTAINER_RELEASE_IMAGE
   variables:
     APP_NAME: 'slackcast'
   script:
     - bundle exec dpl --provider=heroku --app=$APP_NAME --api-key=$HEROKU_API_KEY
-  only:
-    - master
+  only: ["master"]
+  needs: ["release:gitlab"]
+  dependencies: ["release:gitlab"]
