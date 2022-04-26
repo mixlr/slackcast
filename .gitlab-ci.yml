@@ -17,7 +17,7 @@ build:gitlab:test:
   variables:
     KANIKO_IMAGE_NAME: $SLACKCAST_TEST_IMAGE_NAME
     RAILS_ENV: "test"
-  only: ["merge_requests"]
+  only: ["merge_requests", "master"]
   needs: []
   dependencies: []
 
@@ -35,7 +35,7 @@ rspec:
       junit: rspec.xml
   needs: ["build:gitlab:test"]
   dependencies: ["build:gitlab:test"]
-  only: ["merge_requests"]
+  only: ["merge_requests", "master"]
 
 release:gitlab:
   stage: release
