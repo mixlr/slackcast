@@ -30,7 +30,7 @@ RSpec.describe Commands::PlaySound do
       expect(SendToBrowser)
         .to receive(:call)
         .once
-        .with(:play_sound, sound: sound_url, effects: [])
+        .with(:play_sound, sound: 'test', uri: sound_url, effects: [])
         .and_call_original
 
       service_object.call
@@ -58,7 +58,7 @@ RSpec.describe Commands::PlaySound do
       expect(SendToBrowser)
         .to receive(:call)
         .once
-        .with(:play_sound, sound: sound_url, effects: [])
+        .with(:play_sound, sound: "test.mp3", uri: sound_url, effects: [])
         .and_call_original
 
       service_object.call
@@ -83,7 +83,7 @@ RSpec.describe Commands::PlaySound do
       expect(SendToBrowser)
         .to receive(:call)
         .once
-        .with(:play_sound, sound: sound_url, effects: [])
+        .with(:play_sound, sound: anything, uri: sound_url, effects: [])
         .and_call_original
 
       service_object.call
