@@ -5,7 +5,8 @@ require 'commands/random'
 
 class Mick < SlackRubyBot::Bot
   command 'random', '' do |client, data, match|
-    result = Commands::Random.call
+    sound = Commands::Random.call
+    result = Commands::PlaySound.call(sound)
 
     client.web_client.reactions_add(
       name: result[:reaction],

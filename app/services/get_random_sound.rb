@@ -6,11 +6,8 @@ class GetRandomSound
   end
 
   def call
-    path = folder.sample.try(:path_lower)
-
-    return unless path
-
-    client.get_temporary_link(path).last
+    f = folder.sample&.name
+    File.basename(f, File.extname(f))
   end
 
   private

@@ -34,8 +34,9 @@ module Commands
       end
 
       data = {
-        sound:    uri,
-        effects:  parse_effects(effects_string)
+        sound: sound,
+        uri: uri,
+        effects: parse_effects(effects_string)
       }
 
       SendToBrowser.call(:play_sound, data)

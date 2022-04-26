@@ -23,7 +23,7 @@ App.cast = App.cable.subscriptions.create({
 
       switch(data.command) {
         case 'play_sound':
-          playSound(data.sound, data.effects);
+          playSound(data.uri, data.effects);
           break;
         case 'silence':
           silence();

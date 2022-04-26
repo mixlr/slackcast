@@ -34,10 +34,10 @@ var writeLog, playSound, playBuffer;
     context.close().then(init);
   }
 
-  playSound = function(sound, effects) {
+  playSound = function(uri, effects) {
     var request = new XMLHttpRequest();
 
-    request.open('GET', sound, true);
+    request.open('GET', uri, true);
     request.responseType = 'arraybuffer';
 
     request.addEventListener('load', function() {
